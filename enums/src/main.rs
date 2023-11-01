@@ -9,12 +9,38 @@ fn main() {
     let home = IPAddrKind::V4(234, 12, 9, 1);
     let home = IPAddrKind::V6(String::from("::1"));
 
-
     let m = Message::Write(String::from("Helloo"));
     m.call();
 
     let some_number = Some(4);
     let absent_number: Option<i32> = None;
+
+    let some_u8_value = 3;
+
+    match some_u8_value {
+        0 => println!("zero"),
+        1 => println!("one"),
+        2 => println!("two"),
+        3 => println!("three"),
+        //the rest
+        _ => (),
+    }
+
+
+    let some_u8_option = Some(3);
+    let mut fail_count = 0;
+    match some_u8_option {
+        Some(3) => println!("three"),
+        _ => fail_count += 1
+    }
+    //ORRRR
+    if let Some(3) = some_u8_option {
+        println!("three")
+    }
+    else{
+        fail_count += 1
+    }
+
 }
 
 //// 1
@@ -58,8 +84,35 @@ enum Message {
 
 //CAN DO IMPL BLOCKS FOR ENUMS TOO
 impl Message {
-    fn call(&self){
+    fn call(&self) {
         //TODO
     }
-    
+}
+
+//MATCH
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter(UsState),
+}
+
+#[derive(Debug)]
+enum UsState {
+    Alabama,
+    Alaska,
+    NYC,
+    California,
+}
+
+fn value_in_cents(coin: Coin) -> u8 {
+    match coin {
+        Coin::Penny => 1,
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        Coin::Quarter(state) => {
+            println!("State from quarter is {:?}!", state);
+            25
+        }
+    }
 }
