@@ -38,10 +38,10 @@ pub fn sub_main() {
     let s3 = String::from("toe");
     // let s = s1 + "-" + &s2 + "-" + &s3;
     //can use macro
-    let s = format!("{}-{}-{}", s1, s2, s3);
+    let _s = format!("{}-{}-{}", s1, s2, s3);
 
     //INDEXING
-    let k = String::from("power of vim");
+    let _k = String::from("power of vim");
     // println!("{}", k[2]); // gives error cuz rust doesnt support indexing for stings
     let len = String::from("Hola").len();
     println!("{}", len);
@@ -50,14 +50,32 @@ pub fn sub_main() {
     //in rust not every character is stored in 2 byte like cyrillic characters above
 
     let hello = "Здравствуйте";
-    let s = &hello[0..4]; //this is OK
-    // let part = &hello[0..1]; //this panicks cuz it halves the 2byte long character
+    let _s = &hello[0..4]; //this is OK
+                           // let part = &hello[0..1]; //this panicks cuz it halves the 2byte long character
 
-    for c in "नमस्ते".chars() {
-        println!("{}", c);
+    for _c in "नमस्ते".chars() {
+        // println!("{}", c);
     }
 
-    for b in "नमस्ते".bytes() {
-        println!("{}", b);
+    for _b in "नमस्ते".bytes() {
+        // println!("{}", b);
+    }
+
+    let _word = "first";
+    println!("{}",pig_latin("apple"));
+}
+
+fn pig_latin(word: &str) -> String {
+    let vowels = vec!['a', 'e', 'i', 'o', 'u'];
+    let mut temp = word.to_string();
+
+    if vowels.iter().any(|&c| word.starts_with(c)) {
+        temp.push_str("-hay");
+        temp
+    } else {
+        let (first, rest) = temp.split_at(1);
+        let first = first.to_string() + "ay";
+        let rest = rest.to_string() + "-";
+        rest + &first
     }
 }

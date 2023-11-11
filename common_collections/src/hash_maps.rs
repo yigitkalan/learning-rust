@@ -37,34 +37,43 @@ pub fn sub_main() {
     scores.entry(String::from("red")).or_insert(50);
     // println!("{:?}", scores);
 
-
     // Updating a value based on the old value
     let text = "hello world wonderful world";
     let mut map: HashMap<&str, i32> = HashMap::new();
 
-
     //operating based on the value of key
-    for word in text.split_whitespace(){
+    for word in text.split_whitespace() {
         let count = map.entry(word).or_insert(0);
         *count += 1;
     }
-    println!("{:?}",map)
+    println!("{:?}", map);
+
+    let test_vec = vec![1,1, 2, 4, 5, 2, 1, 6, 7, 3, 1, 2];
+    find_mod(&test_vec);
 }
 
-fn find_mod(nums: &Vec<i32>){
-    if nums.len() <= 1{
-        if nums.len()  == 0{
-            return 
+fn find_mod(nums: &Vec<i32>) {
+    if nums.len() <= 1 {
+        if nums.len() == 0 {
+            return;
         }
     }
-    let mut counts: HashMap<i32,i32> = HashMap::new();
-    for num in nums{
+    let mut counts: HashMap<i32, i32> = HashMap::new();
+    for num in nums {
         let count = counts.entry(*num).or_insert(0);
         *count += 1;
     }
-    let max = counts.values().max().unwrap();
-    // let maxs: Vec<&i32> = counts.keys().filter(|a| a == &max).collect();
-    let modd = counts.keys().max_by_key(|_, count| count);
-    println!("{:?}", maxs);
 
+    //Below gets all keys with the maximum occurance
+    // let max = counts.values().max().unwrap();
+    // let maxs: Vec<&i32> = counts
+    //     .keys()
+    //     .filter(|a| counts.get(a) == Some(max))
+    //     .collect();
+    // println!("{:?}", maxs);
+
+    //Instead can use max_by_key to get the first element with the max value
+    if let Some((mod_key, _)) = counts.iter().max_by_key(|&(_, count)| count) {
+        println!("{:?}", mod_key);
+    }
 }
