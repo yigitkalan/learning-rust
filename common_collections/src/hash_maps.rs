@@ -49,7 +49,22 @@ pub fn sub_main() {
         *count += 1;
     }
     println!("{:?}",map)
+}
 
-
+fn find_mod(nums: &Vec<i32>){
+    if nums.len() <= 1{
+        if nums.len()  == 0{
+            return 
+        }
+    }
+    let mut counts: HashMap<i32,i32> = HashMap::new();
+    for num in nums{
+        let count = counts.entry(*num).or_insert(0);
+        *count += 1;
+    }
+    let max = counts.values().max().unwrap();
+    // let maxs: Vec<&i32> = counts.keys().filter(|a| a == &max).collect();
+    let modd = counts.keys().max_by_key(|_, count| count);
+    println!("{:?}", maxs);
 
 }
