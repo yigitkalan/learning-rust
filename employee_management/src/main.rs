@@ -1,13 +1,14 @@
-use std::{collections::HashMap, io::stdin};
+use std::{collections::HashMap, io::{stdin, self, Write}};
 
 fn main() {
-    let remove_appendix: &str = "REMOVE";
+    let remove_appendix: &str = "FROM";
     let add_appendix: &str = "TO";
     let mut departmants: HashMap<String, Vec<String>> = HashMap::new();
     println!("Welcome to employee management System \n");
 
     loop {
-        println!("Enter Your Command:");
+        print!("-> ");
+        io::stdout().flush().expect("Failed to flush stdout");
         let mut command = String::new();
 
         stdin()
@@ -18,7 +19,7 @@ fn main() {
         let verb = match words.get(0) {
             Some(word) => word.to_uppercase(),
             None => {
-                println!("Invalid Command, to see possible options type 'Help'");
+                error_msg();
                 continue;
             }
         };
@@ -32,7 +33,7 @@ fn main() {
             name = match words.get(1) {
                 Some(val) => val.to_uppercase(),
                 None => {
-                    println!("Invalid Command, to see possible options type 'Help'\n");
+                    error_msg();
                     continue;
                 }
             };
@@ -41,7 +42,7 @@ fn main() {
                 appendix = match words.get(2) {
                     Some(val) => val.to_uppercase(),
                     None => {
-                        println!("Invalid Command, to see possible options type 'Help'\n");
+                        error_msg();
                         continue;
                     }
                 };
@@ -49,23 +50,24 @@ fn main() {
                     department = match words.get(3) {
                         Some(val) => val.to_uppercase(),
                         None => {
-                            println!("Invalid Command, to see possible options type 'Help'\n");
+                            error_msg();
                             continue;
                         }
                     };
                 } else {
-                    println!("Invalid Command, to see possible options type 'Help'\n");
+                    error_msg();
                     continue;
                 }
             }
         }
 
+        println!();
         match &verb {
             Command::Add => {
                 if appendix == add_appendix {
                     add_to_department(&mut departmants, name, department)
                 } else {
-                    println!("Invalid Command, to see possible options type 'Help'\n");
+                    error_msg();
                     continue;
                 }
             }
@@ -73,7 +75,7 @@ fn main() {
                 if appendix == remove_appendix {
                     remove_from_department(&mut departmants, name, department)
                 } else {
-                    println!("Invalid Command, to see possible options type 'Help'\n");
+                    error_msg();
                     continue;
                 }
             }
@@ -81,21 +83,26 @@ fn main() {
             Command::Help => show_help(),
             Command::Exit => break,
             Command::Err => {
-                println!("Invalid Command, to see possible options type 'Help'\n");
+                error_msg();
                 continue;
             }
         }
     }
 }
 
+fn error_msg() {
+    println!("Invalid Command, to see possible options type 'Help'\n");
+}
+
 fn show_help() {
-    println!("Use the available formats:");
-    println!(" ---- 'Add employe__name to departmant_name' to add an employee to a department");
+    println!("Use the available formats:\n");
+    println!(" 'Add employe__name to departmant_name' to add an employee to a department\n");
     println!(
-        " ---- 'Remove employee_name from departmant_name' to remove an employee from department"
+        " 'Remove employee_name from departmant_name' to remove an employee from department"
     );
-    println!(" ---- 'Get departmant_name' to list a specific department ");
-    println!(" ---- 'Exit' to quit the program \n\n");
+    println!();
+    println!(" 'Get departmant_name' to list a specific department \n");
+    println!(" 'Exit' to quit the program \n\n");
 }
 
 fn str_to_cmd(word: &str) -> Command {
@@ -118,7 +125,9 @@ fn get_departmant(company: &HashMap<String, Vec<String>>, name: String) {
         }
     };
 
-    println!("{:?}", dep);
+    println!("People in {}:", make_lower_case(&name));
+    dep.iter()
+        .for_each(|person| println!("{}", make_lower_case(person)));
 }
 
 fn add_to_department(company: &mut HashMap<String, Vec<String>>, emp: String, dep: String) {
@@ -130,11 +139,25 @@ fn add_to_department(company: &mut HashMap<String, Vec<String>>, emp: String, de
 
 fn remove_from_department(company: &mut HashMap<String, Vec<String>>, emp: String, dep: String) {
     let employees = company.entry(dep).or_insert(Vec::new());
-    if !employees.contains(&emp) {
+    if employees.contains(&emp) {
         employees.retain(|name| name != &emp)
     }
 }
 
+fn make_lower_case(stri: &str) -> String {
+    //make the first character of each word upper case and the rest lowercase
+    let mut new_string = String::new();
+    for (i, c) in stri.chars().enumerate() {
+        if i == 0 {
+            new_string.push(c.to_uppercase().next().unwrap());
+        } else {
+            new_string.push(c.to_lowercase().next().unwrap());
+        }
+    }
+    new_string
+}
+
+#[derive(Debug)]
 enum Command {
     Add,
     Remove,
