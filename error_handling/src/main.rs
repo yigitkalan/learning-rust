@@ -41,7 +41,7 @@ fn main() {
 //propagation of errors
 fn get_username_from_file(path: &str) -> Result<String, Error> {
     let f = File::open(path);
-
+    
     let mut f = match f {
         Ok(file) => file,
         Err(err) => return Err(err),
@@ -78,6 +78,28 @@ fn read_username_from_file(path: &str) -> Result<String, Error> {
     fs::read_to_string(path)
 
 
+
     // ? operator can only be used inside functions that returns a result
     // so we cannot use it in main function for example
 }
+
+
+//To put boundaries and make things more strict we can create new types
+// the Guess type below might be used in the guessing game from earlier
+// pub struct Guess{
+//     value: i32,
+// }
+//
+// impl Guess{
+//     pub fn new(value: i32) -> Guess{
+//         if value < 0  || value > 100{
+//             panic!("Guess value must be between 1 and 100, got {}.", value);
+//         }
+//         Guess { 
+//             value
+//         }
+//     }
+//     pub fn value(&self) -> i32{
+//         self.value
+//     }
+// }

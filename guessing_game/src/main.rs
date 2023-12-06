@@ -20,9 +20,10 @@ fn main() {
             .read_line(&mut guess)
             .expect("Failed to read the line");
 
+
         // this is shadowing, the line below shadows the previous decleration of guess
         // shadowing generally used to change the type of the variable to another
-        let guess: u32 = match guess.trim().parse() {
+        let guess: i32 = match guess.trim().parse() {
             Ok(num) => num,
             Err(_) => {
                 println!("\nPlease enter a valid number\n");
@@ -30,7 +31,10 @@ fn main() {
             }
         };
 
-        match guess.cmp(&secret_number) {
+        let guess = Guess::new(guess);
+
+
+        match guess.value().cmp(&secret_number) {
             Ordering::Less => println!("Too Small!"),
             Ordering::Greater => println!("Too Big!"),
             Ordering::Equal => {
@@ -38,5 +42,24 @@ fn main() {
                 break;
             }
         }
+    }
+}
+
+
+pub struct Guess{
+    value: i32,
+}
+
+impl Guess{
+    pub fn new(value: i32) -> Guess{
+        if value < 0  || value > 100{
+            panic!("Guess value must be between 1 and 100, got {}.", value);
+        }
+        Guess { 
+            value
+        }
+    }
+    pub fn value(&self) -> i32{
+        self.value
     }
 }
