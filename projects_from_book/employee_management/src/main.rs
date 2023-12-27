@@ -138,9 +138,16 @@ fn add_to_department(company: &mut HashMap<String, Vec<String>>, emp: String, de
 }
 
 fn remove_from_department(company: &mut HashMap<String, Vec<String>>, emp: String, dep: String) {
-    let employees = company.entry(dep).or_insert(Vec::new());
+    let employees = company.entry(dep.to_string()).or_insert(Vec::new());
+    if employees.is_empty(){
+        println!("There is no {} department",  make_lower_case(&dep));
+        return
+    }
     if employees.contains(&emp) {
         employees.retain(|name| name != &emp)
+    }
+    else{
+        println!("{} is not in {}", make_lower_case(&emp), make_lower_case(&dep));
     }
 }
 
