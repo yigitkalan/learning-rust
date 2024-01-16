@@ -19,7 +19,7 @@ pub fn sub_main() {
     let mut s = String::from("hello");
     s.push_str(" world");
     println!("{}", s);
-
+   
     let mut s1 = String::from("foo");
     let s2 = "bar";
     s1.push_str(s2);

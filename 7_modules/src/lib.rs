@@ -1,5 +1,6 @@
 // use std::fmt;
 // //we could do pub to make code calling us use io just as if it brought it to scope
+// we can use pub keyword before use to make it accessible from others
 // pub use std::io;
 // use std::io::Result as IOResult;
 
@@ -21,7 +22,7 @@
 // fn fn2() -> io::Result<()>{
 // }
 
-//WHEN TWO OF THE SAME RESULT IS USED WE NEED TO 'USE' THEIR PARENT
+//WHEN TWO OF THE SAME RESULT struct IS USED WE NEED TO 'USE' THEIR PARENT
 //ORRRRR USE as KEYWORD
 
 mod back_of_house;

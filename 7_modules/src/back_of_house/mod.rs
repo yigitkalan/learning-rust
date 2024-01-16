@@ -18,7 +18,7 @@ impl Breakfast {
 
 fn fix_wrong_order() {
     cook_order();
-    //super is like ../ in linux, one up level of back_of_house is root(create)
+    //super is like ../ in linux, one up level of back_of_house is root(crate)
     super::front_of_house::serving::serve_order();
 }
 fn cook_order() {}
