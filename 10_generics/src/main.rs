@@ -52,24 +52,31 @@ fn largest_char(list: &[char]) -> char {
 }
 
 //INSTEAD
+// As discussed in “Stack-Only Data: Copy” on 
+// page 67, types like i32 and char that have a known size can be stored on the 
+// stack, so they implement the Copy trait. But when we made the largest func-
+// tion generic, it became possible for the list parameter to have types in it that 
+// don’t implement the Copy trait. 
 
-// fn largest<T>(list: &[T]) -> T {
-//THIS WILL GIVE AN ERROR FOR NOW
-// let mut largest = list[0];
-// for &item in list.iter() {
-//     if item > largest {
-//         largest = item;
-//     }
-// }
-// largest
-// }
+fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
+let mut largest = list[0];
+for &item in list.iter() {
+    if item > largest {
+        largest = item;
+    }
+}
+largest
+}
+
+
+//we can use generics in enums too, Result and Option are common examples
 
 struct Point<T> {
     x: T,
     y: T,
 }
-impl<T> Point<T> {
-    fn x(&self) -> &T {
+impl<K> Point<K> {
+    fn x(&self) -> &K {
         &self.x
     }
 }
