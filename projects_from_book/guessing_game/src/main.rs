@@ -10,10 +10,10 @@ fn main() {
 
     loop {
         print!("Enter your guess : ");
-        io::stdout().flush().expect("Failed to flush stdout"); // Explicitly flush stdout
-                                                               //stdout is line buffered so it automatically
-                                                               //flushes when another line needed since this is print,
-                                                               //not println we need to do i manually
+        io::stdout().flush().expect("Failed to flush stdout"); 
+        // Explicitly flush stdout stdout is line buffered so it 
+        // automatically flushes when another line needed since 
+        // this is print, not println we need to do i manually
 
         let mut guess = String::new();
         io::stdin()
@@ -52,7 +52,7 @@ pub struct Guess{
 
 impl Guess{
     pub fn new(value: i32) -> Guess{
-        if value < 0  || value > 100{
+        if !(0..=100).contains(&value){
             panic!("Guess value must be between 1 and 100, got {}.", value);
         }
         Guess { 
